@@ -1,0 +1,12 @@
+[
+	{
+	    "id" : "hl7inspector",
+	    "caption" : "HL7 Inspector",
+	    "command" : "hl7inspector"
+	},
+	{
+	    "id" : "hl7search",
+	    "caption" : "HL7 Search",
+	    "command" : "hl7search"
+	}
+]
