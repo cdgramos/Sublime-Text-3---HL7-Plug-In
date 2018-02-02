@@ -12,13 +12,13 @@ Sublime Text 3 plug-in and syntax highlighter.
 ### Segment inspector
 Gives a description of the segment and parses it.
 
-![Segment Inspector Image](https://raw.githubusercontent.com/cdgramos/Sublime-Text-3---HL7-Plug-In/master/Misc/segmentinspector.gif)
+![Segment Inspector Image](Misc/segmentinspector.gif)
 
 
 ### Segment / Event search
 Searches on Caristix web site the given segment (e.g. PID, OBX, ...) or event (e.g. ADT^A01, ADT_A04). Notice that events separated with both ^ and _ are valid searches.
 
-![Segment Event Searcher Image](https://raw.githubusercontent.com/cdgramos/Sublime-Text-3---HL7-Plug-In/master/Misc/segmenteventsearcher.gif)
+![Segment Event Searcher Image](Misc/segmenteventsearcher.gif)
 
 
 ## License
