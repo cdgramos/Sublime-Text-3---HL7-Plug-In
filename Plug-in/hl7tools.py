@@ -44,23 +44,20 @@ class hl7searchCommand(sublime_plugin.WindowCommand):
 class hl7inspectorCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 
-		var = self.view.rowcol(self.view.sel()[0].begin())
-
-		var2 = self.view.substr(self.view.line(self.view.sel()[0]))
-
-		#totalPipes = var.count("\|")
-		#print("total pipes:" + str(totalPipes))
-
-		parts = var2.split('|')
-		#print(str(parts))
-
-		segmentList = segment("","")
-
+		#Popup layout
 		header = ""
 		body = ""
 
+		#Segment
+		selectedSegment = self.view.substr(self.view.line(self.view.sel()[0]))
+
+
+		fields = selectedSegment.split('|')
+
+		segmentList = segment("","")
+
 		for segmentItem in segmentList.loadSegmentList():
-			if (segmentItem.code == parts[0]):
+			if (segmentItem.code == fields[0]):
 				header = segmentItem.code + " - " + segmentItem.description
 
 
@@ -68,37 +65,68 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 
 
 		fieldId = 0
-		subFieldId = 1
-
-		for part in parts:
-
-			if (part != ""):
-
-				if(part != "^~\&"):
-					subParts = part.split('^')
-
-					totalCircunflex = part.count("^")
-
-					for subPart in subParts:
-						if(subPart != ""):
-
-							regex = "(<)"
-							filler = "&lt;"
-							subPart = re.sub(regex, filler, subPart)
-
-							regex = "(>)"
-							filler = "&gt;"
-							subPart = re.sub(regex, filler, subPart)
+		componentId = 1
+		subComponentId = 1
 
 
-							if(totalCircunflex > 0):
-								body = body + '<br>' + str(fieldId) + "." + str(subFieldId) + " - " + subPart
-							else:
-								body = body + '<br>' + str(fieldId) + " - " + subPart
+		for field in fields:
 
-						subFieldId = subFieldId + 1
+			if (field != ""):
 
-					subFieldId = 1
+				if(field != "^~\&"):
+					components = field.split('^')
+
+					totalCircunflex = field.count("^")
+
+					for component in components:
+						if(component != ""):
+
+							totalAmpersand = component.count("&")
+
+							if(totalAmpersand > 0):
+
+								subComponents = component.split('&')
+
+								for subComponent in subComponents:
+									if(subComponent != ""):
+
+										regex = "(<)"
+										filler = "&lt;"
+										subComponent = re.sub(regex, filler, subComponent)
+			
+										regex = "(>)"
+										filler = "&gt;"
+										subComponent = re.sub(regex, filler, subComponent)
+			
+			
+										if(totalCircunflex > 0):
+											body = body + '<br>' + str(fieldId) + "." + str(componentId) + "."+ str(subComponentId) + " - " + subComponent
+
+
+									subComponentId = subComponentId + 1
+
+								subComponentId = 1
+
+
+							else: 
+
+								regex = "(<)"
+								filler = "&lt;"
+								component = re.sub(regex, filler, component)
+	
+								regex = "(>)"
+								filler = "&gt;"
+								component = re.sub(regex, filler, component)
+	
+	
+								if(totalCircunflex > 0):
+									body = body + '<br>' + str(fieldId) + "." + str(componentId) + " - " + component
+								else:
+									body = body + '<br>' + str(fieldId) + " - " + component
+
+						componentId = componentId + 1
+
+					componentId = 1
 
 				else:
 					body = body + '<br>' + str(1) + " - " + "^~\&" + "\n"
@@ -106,9 +134,7 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 
 			fieldId = fieldId + 1
 
-
 		message = header + body
-
 
 		self.view.show_popup(message, on_navigate=print)
 		
