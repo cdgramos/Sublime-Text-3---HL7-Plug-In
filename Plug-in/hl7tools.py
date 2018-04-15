@@ -74,18 +74,16 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 			if (field != ""):
 
 				if(field != "^~\&"):
-					components = field.split('^')
+					components =  re.compile(r'(?<!\\)(?:\\\\)*\^').split(field)
 
 					totalCircunflex = field.count("^")
 
 					for component in components:
 						if(component != ""):
 
-							totalAmpersand = component.count("&")
+							subComponents =  re.compile(r'(?<!\\)(?:\\\\)*&').split(component)
 
-							if(totalAmpersand > 0):
-
-								subComponents = component.split('&')
+							if(len(subComponents) > 1):
 
 								for subComponent in subComponents:
 									if(subComponent != ""):
@@ -98,9 +96,7 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 										filler = "&gt;"
 										subComponent = re.sub(regex, filler, subComponent)
 			
-			
-										if(totalCircunflex > 0):
-											body = body + '<br>' + str(fieldId) + "." + str(componentId) + "."+ str(subComponentId) + " - " + subComponent
+										body = body + '<br>' + str(fieldId) + "." + str(componentId) + "."+ str(subComponentId) + " - " + subComponent
 
 
 									subComponentId = subComponentId + 1
@@ -135,6 +131,7 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 			fieldId = fieldId + 1
 
 		message = header + body
+		message = message.replace("&", "&amp;")
 
 		self.view.show_popup(message, on_navigate=print)
 		
