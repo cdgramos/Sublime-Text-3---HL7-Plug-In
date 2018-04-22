@@ -20,6 +20,10 @@ Searches on Caristix web site the given segment (e.g. PID, OBX, ...) or event (e
 
 ![Segment Event Searcher Image](Misc/segmenteventsearcher.gif)
 
+### Message Cleaner
+Cleans an HL7 message from unwanted escape characters such as "^M". It also cleans every unnecessary "|" and "^" to improve readability.
+
+![Message Cleaner Image](Misc/messagecleaner.gif)
 
 ## License
 
