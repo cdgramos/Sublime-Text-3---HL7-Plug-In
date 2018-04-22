@@ -15,15 +15,17 @@ Gives a description of the segment and parses it.
 ![Segment Inspector Image](Misc/segmentinspector.gif)
 
 
+### Message Cleaner
+Cleans an HL7 message from unwanted escape characters such as "^M". It also cleans every unnecessary "|" and "^" to improve readability.
+
+![Message Cleaner Image](Misc/messagecleaner.gif)
+
+
 ### Segment / Event search
 Searches on Caristix web site the given segment (e.g. PID, OBX, ...) or event (e.g. ADT^A01, ADT_A04). Notice that events separated with both ^ and _ are valid searches.
 
 ![Segment Event Searcher Image](Misc/segmenteventsearcher.gif)
 
-### Message Cleaner
-Cleans an HL7 message from unwanted escape characters such as "^M". It also cleans every unnecessary "|" and "^" to improve readability.
-
-![Message Cleaner Image](Misc/messagecleaner.gif)
 
 ## License
 
