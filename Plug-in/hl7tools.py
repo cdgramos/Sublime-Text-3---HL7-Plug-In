@@ -136,6 +136,89 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 		self.view.show_popup(message, on_navigate=print)
 		
 
+		
+class hl7cleanerCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+
+		content = self.view.substr(sublime.Region(0, self.view.size()))
+
+		#new lines on new segment
+		segmentList = segment("","")
+
+		for segmentItem in segmentList.loadSegmentList():
+			regex = "(\^M)" + segmentItem.code
+			filler = "\n" + segmentItem.code
+			content = re.sub(regex, filler, content)
+
+		for segmentItem in segmentList.loadSegmentList():
+			regex = "(\^K)" + segmentItem.code
+			filler = "\n" + segmentItem.code
+			content = re.sub(regex, filler, content)
+
+		#remove any empty space before each segment
+		for segmentItem in segmentList.loadSegmentList():
+			regex = "\ {1,}" + segmentItem.code
+			filler = "" + segmentItem.code
+			content = re.sub(regex, filler, content)
+
+		#when there is no space before 
+		for segmentItem in segmentList.loadSegmentList():
+			regex = "(?<=[a-zA-Z0-9|])" + segmentItem.code
+			filler = "\n" + segmentItem.code
+			content = re.sub(regex, filler, content)
+
+		#last two ^M at the end of content followed by new line
+		content = re.sub("(\^M\^\\\\\^M)\n", "\n", content)
+		
+		#last two ^M at the end of content followed by end of content
+		content = re.sub("(\^M\^\\\\\^M)$", "\n", content)
+			
+		#last ^M with new line
+		regex = "(\^M)\n" 
+		filler = "\n"
+		content = re.sub(regex, filler, content)
+		
+		#last ^M with end of content
+		regex = "(\^M)$" 
+		filler = "\n"
+		content = re.sub(regex, filler, content)
+
+
+		#last two ^M at the end of content followed by new line with empty space before
+		content = re.sub("(\^M\^\\\\\^M)\ {1,}\n", "\n", content)
+		
+		#last two ^M at the end of content followed by end of content with empty space before
+		content = re.sub("(\^M\^\\\\\^M)\ {1,}$", "\n", content)
+
+		#last ^M with new line with empty space before
+		regex = "(\^M)\ {1,}\n" 
+		filler = "\n"
+		content = re.sub(regex, filler, content)
+		
+		#last ^M with end of content with empty space before
+		regex = "(\^M)\ {1,}$" 
+		filler = "\n"
+		content = re.sub(regex, filler, content)
+
+		#extra circumflex ^
+		content = re.sub("(\^{1,})[|]", "|", content)
+		
+		#extra pipes | followed by new lines
+		content = re.sub("\|{2,}\n", "|\n", content)
+		
+		#extra pipes | followed by end of content
+		content = re.sub("\|{2,}$", "|\n", content)
+		
+		#empty lines at the beginning of the text
+		content = re.sub("^(\n){1,}", "", content)
+		
+		#blank spaces at the beginning of the text
+		content = re.sub("^ {1,}", "", content)
+		
+
+
+		self.view.insert(edit, 0, content + "\n\n\n")
+		
 
 
 class segment(object):

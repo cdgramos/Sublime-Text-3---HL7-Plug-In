@@ -8,5 +8,10 @@
 	    "id" : "hl7search",
 	    "caption" : "HL7 Search",
 	    "command" : "hl7search"
+	},
+	{
+	    "id" : "hl7cleaner",
+	    "caption" : "HL7 Cleaner",
+	    "command" : "hl7cleaner"
 	}
 ]
