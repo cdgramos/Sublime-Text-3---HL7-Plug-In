@@ -131,7 +131,7 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 			fieldId = fieldId + 1
 
 		message = header + body
-		message = message.replace("&", "&amp;")
+		message = message.replace("\&", "\&amp;")
 
 		self.view.show_popup(message, on_navigate=print)
 		
