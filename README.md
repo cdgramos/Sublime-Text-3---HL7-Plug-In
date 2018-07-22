@@ -33,7 +33,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 ## Change Log
-
+* 22-07-2018 - Keyword inspector
 * 22-04-2018 - Message cleaner
 * 15-04-2018 - Sub-component separator support
 * 01-02-2018 - First version
