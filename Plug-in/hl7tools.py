@@ -155,11 +155,14 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 								filler = "&gt;"
 								component = re.sub(regex, filler, component)
 	
-	
+								till = re.compile(r'(?<!\\)(?:\\\\)*~').split(component)
+
 								if(totalCircunflex > 0):
-									body = body + '<br>' + str(fieldId) + "." + str(componentId) + " - " + component
+									for tillItem in till:
+										body = body + '<br>' + str(fieldId) + "." + str(componentId) + " - " + tillItem
 								else:
-									body = body + '<br>' + str(fieldId) + " - " + component
+									for tillItem in till:
+										body = body + '<br>' + str(fieldId) + " - " + tillItem
 
 						componentId = componentId + 1
 
