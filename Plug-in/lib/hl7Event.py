@@ -1,8 +1,17 @@
+# Handles the definition of the HL7 events
 class hl7Event(object):
 	def __init__(self, code, description):
 		self.code = code
 		self.description = description
 
+	# Gets a event object based on his code. If no object is found in the eventList with the following code None is returned.
+	def getEventByCode(self, code, eventList):
+		for listItem in eventList:
+			if (listItem.code == code):
+				return listItem
+		return None
+
+	# Loads the entire event list
 	def loadEventList(self):
 		hl7EventList = []
 

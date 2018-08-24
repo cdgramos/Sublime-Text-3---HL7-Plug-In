@@ -31,6 +31,10 @@ On double click shows the description of the message (e.g. ADT_A01) or the segme
 
 ![Keyword Inspector Image](Misc/keywordinspector.gif)
 
+### Status Bar
+Quickly know which field you are looking to.
+
+![Status Bar Image](Misc/statusbar.gif)
 
 ## License
 
@@ -38,6 +42,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 ## Change Log
+* 24-08-2018 - Status bar now displays the segment and position where the cursor is
 * 23-07-2018 - Repetition character support
 * 22-07-2018 - Keyword inspector
 * 22-04-2018 - Message cleaner

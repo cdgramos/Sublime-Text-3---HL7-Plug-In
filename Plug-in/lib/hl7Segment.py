@@ -1,8 +1,17 @@
+# Handles the definition of the HL7 segments
 class hl7Segment(object):
 	def __init__(self, code, description):
 		self.code = code
 		self.description = description
 
+	# Gets a segment object based on his code. If no object is found in the segmentList with the following code None is returned.
+	def getSegmentByCode(self, code, segmentList):
+		for listItem in segmentList:
+			if (listItem.code == code):
+				return listItem
+		return None
+
+	# Loads the entire segment list
 	def loadSegmentList(self):
 		hl7SegmentList = []
 
@@ -181,7 +190,7 @@ class hl7Segment(object):
 		hl7SegmentList.append(hl7Segment("TQ2", "Timing/Quantity Relationship"))
 		hl7SegmentList.append(hl7Segment("TXA", "Transcription Document Header"))
 		hl7SegmentList.append(hl7Segment("UAC", "User Authentication Credential Segment"))
-		hl7SegmentList.append(hl7Segment("UB1", ""))
+		hl7SegmentList.append(hl7Segment("UB1", "UB82 Data"))
 		hl7SegmentList.append(hl7Segment("UB2", "Uniform Billing Data"))
 		hl7SegmentList.append(hl7Segment("URD", "withdrawn"))
 		hl7SegmentList.append(hl7Segment("URS", "withdrawn"))
