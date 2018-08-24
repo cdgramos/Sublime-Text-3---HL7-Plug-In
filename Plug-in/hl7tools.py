@@ -2,12 +2,81 @@ import sublime
 import sublime_plugin
 import re
 import webbrowser
-from .lib.hl7Event import hl7Event
-from .lib.hl7Segment import hl7Segment
+from .lib.hl7Event import *
+from .lib.hl7Segment import *
+from .lib.hl7TextUtils import *
+
+
 
 hl7EventList = hl7Event("","")
+hl7EventList = hl7EventList.loadEventList()
 hl7SegmentList = hl7Segment("","")
+hl7SegmentList = hl7SegmentList.loadSegmentList()
 
+STATUS_BAR_HL7 = 'StatusBarHL7'
+
+# On selection modified it will update the status bar
+class selectionModifiedListener(sublime_plugin.EventListener):
+	def on_selection_modified(self, view):
+
+
+		line = getLineTextBeforeCursorPosition(self, view, sublime)
+
+		# Get the first 3 letters of the line
+		segment = line[:3]
+
+		
+		if hl7Segment.getSegmentByCode(self, segment, hl7SegmentList) != None:
+
+			statusBarText = '[ ' + segment + ' '
+
+
+			fieldList = re.split(r'(?<!\\)(?:\\\\)*\|', line)
+			fieldCounter = len(fieldList)
+
+			if segment != 'MSH':
+				statusBarText +=  str(fieldCounter-1) 
+			else:
+				statusBarText +=  str(fieldCounter)
+
+			isComponentRequired = False
+			isSubComponentRequired = False
+
+			fullField = getFieldAtCursorPosition(self, view, sublime)
+			
+			# Level of detail required
+			if fieldHasComponents(self, fullField) == True:
+				isComponentRequired = True
+
+			if fieldHasSubComponents(self, fullField) == True:
+				isComponentRequired = True
+				isSubComponentRequired = True
+
+			if isComponentRequired == True:
+				field = fieldList[-1]
+				componentList = re.split(r'(?<!\\)(?:\\\\)*\^', field)
+				componentCounter = len(componentList)
+				statusBarText += '.' + str(componentCounter)
+
+			if isSubComponentRequired == True:
+				subComponent = componentList[-1]
+				subComponentList = re.split(r'(?<!\\)(?:\\\\)*\&', subComponent)
+				subComponentCounter = len(subComponentList)
+				statusBarText += '.' + str(subComponentCounter)
+
+
+			statusBarText += ' ]' 
+			#sublime.status_message('\t' + statusBarText + ' '*20)
+			view.set_status(STATUS_BAR_HL7, statusBarText)
+
+		else:
+			#sublime.status_message('')
+			view.erase_status(STATUS_BAR_HL7)
+
+
+
+
+# Double click on keywords (segments / events)
 class doubleClickKeywordListener(sublime_plugin.EventListener):
 
 	def on_text_command(self, view, cmd, args):
@@ -24,7 +93,7 @@ class doubleClickKeywordListener(sublime_plugin.EventListener):
 
 						def asyncMessagePopup():
 							desc = ""
-							for eventItem in hl7EventList.loadEventList():
+							for eventItem in hl7EventList:
 
 								regex = "(\^)"
 								filler = "_"
@@ -33,7 +102,7 @@ class doubleClickKeywordListener(sublime_plugin.EventListener):
 								if (eventItem.code == codeWithoutCircunflex):
 									desc = eventItem.description
 
-							for segmentItem in hl7SegmentList.loadSegmentList():
+							for segmentItem in hl7SegmentList:
 
 								regex = "(\^)"
 								filler = "_"
@@ -50,8 +119,9 @@ class doubleClickKeywordListener(sublime_plugin.EventListener):
 						 text.append(view.substr(region))
 
 
+# Searchs an event or segment on caristix web-site
 class hl7searchCommand(sublime_plugin.WindowCommand):
-	def run(self):     
+	def run(self):  
 		
 		window = self.window
 		view = window.active_view()
@@ -64,7 +134,7 @@ class hl7searchCommand(sublime_plugin.WindowCommand):
 		URL = "http://hl7-definition.caristix.com:9010/HL7%20v2.5.1/Default.aspx?version=HL7 v2.5.1&"
 
 
-		for eventItem in hl7EventList.loadEventList():
+		for eventItem in hl7EventList:
 
 			regex = "(\^)"
 			filler = "_"
@@ -74,7 +144,7 @@ class hl7searchCommand(sublime_plugin.WindowCommand):
 				URL = URL + "triggerEvent=" + eventItem.code
 				isValid = 1
 
-		for segmentItem in hl7SegmentList.loadSegmentList():
+		for segmentItem in hl7SegmentList:
 			if (segmentItem.code == selectionText):
 				URL = URL + "segment=" + segmentItem.code
 				isValid = 1
@@ -83,7 +153,7 @@ class hl7searchCommand(sublime_plugin.WindowCommand):
 		if (isValid == 1):
 			webbrowser.open_new(URL)
 
-
+# Inspects an entire line
 class hl7inspectorCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 
@@ -96,8 +166,9 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 
 
 		fields = selectedSegment.split('|')
+		fields = re.split(r'(?<!\\)(?:\\\\)*\|', selectedSegment)
 
-		for segmentItem in hl7SegmentList.loadSegmentList():
+		for segmentItem in hl7SegmentList:
 			if (segmentItem.code == fields[0]):
 				header = segmentItem.code + " - " + segmentItem.description
 
@@ -180,30 +251,30 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 		self.view.show_popup(message, on_navigate=print)
 		
 
-		
+# Cleans an HL7 message from reduntant information and idents it
 class hl7cleanerCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 
 		content = self.view.substr(sublime.Region(0, self.view.size()))
 
-		for segmentItem in hl7SegmentList.loadSegmentList():
+		for segmentItem in hl7SegmentList:
 			regex = "(\^M)" + segmentItem.code
 			filler = "\n" + segmentItem.code
 			content = re.sub(regex, filler, content)
 
-		for segmentItem in hl7SegmentList.loadSegmentList():
+		for segmentItem in hl7SegmentList:
 			regex = "(\^K)" + segmentItem.code
 			filler = "\n" + segmentItem.code
 			content = re.sub(regex, filler, content)
 
 		#remove any empty space before each segment
-		for segmentItem in hl7SegmentList.loadSegmentList():
+		for segmentItem in hl7SegmentList:
 			regex = "\ {1,}" + segmentItem.code
 			filler = "" + segmentItem.code
 			content = re.sub(regex, filler, content)
 
 		#when there is no space before 
-		for segmentItem in hl7SegmentList.loadSegmentList():
+		for segmentItem in hl7SegmentList:
 			regex = "(?<=[a-zA-Z0-9|])" + segmentItem.code
 			filler = "\n" + segmentItem.code
 			content = re.sub(regex, filler, content)
