@@ -160,6 +160,7 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 		#Popup layout
 		header = ""
 		body = ""
+		segmentCode = ""
 
 		#Segment
 		selectedSegment = self.view.substr(self.view.line(self.view.sel()[0]))
@@ -168,18 +169,18 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 		fields = selectedSegment.split('|')
 		fields = re.split(r'(?<!\\)(?:\\\\)*\|', selectedSegment)
 
-		for segmentItem in hl7SegmentList:
-			if (segmentItem.code == fields[0]):
-				header = segmentItem.code + " - " + segmentItem.description
-
-
-		header = '<b style="color:#33ccff;">' + header + '</b>'
-
 
 		fieldId = 0
 		componentId = 1
 		subComponentId = 1
 
+		for segmentItem in hl7SegmentList:
+			if (segmentItem.code == fields[0]):
+				header = segmentItem.code + " - " + segmentItem.description
+				segmentCode = segmentItem.code
+
+
+		header = '<b style="color:#33ccff;">' + header + '</b>'
 
 		for field in fields:
 
@@ -228,20 +229,30 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 	
 								till = re.compile(r'(?<!\\)(?:\\\\)*~').split(component)
 
+								if segmentCode == 'MSH' and fieldId > 1:
+									
+									fieldCounter = fieldId + 1
+								else:
+									fieldCounter = fieldId
+
+
 								if(totalCircunflex > 0):
 									for tillItem in till:
-										body = body + '<br>' + str(fieldId) + "." + str(componentId) + " - " + tillItem
+										body = body + '<br>' + str(fieldCounter) + "." + str(componentId) + " - " + tillItem
 								else:
 									for tillItem in till:
-										body = body + '<br>' + str(fieldId) + " - " + tillItem
+										body = body + '<br>' + str(fieldCounter) + " - " + tillItem
 
 						componentId = componentId + 1
 
 					componentId = 1
 
 				else:
-					body = body + '<br>' + str(1) + " - " + "^~\&" + "\n"
-
+					if len(selectedSegment) > 3:
+						if selectedSegment[3] == '|':
+							body = body + '<br>' + str(1) + " - " + selectedSegment[3] + "\n"
+					if len(fields) > 0:
+						body = body + '<br>' + str(2) + " - " + fields[1] + "\n"
 
 			fieldId = fieldId + 1
 
