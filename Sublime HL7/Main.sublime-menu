@@ -1,0 +1,47 @@
+[
+    {
+        "caption": "Preferences",
+        "mnemonic": "n",
+        "id": "preferences",
+        "children":
+        [
+            {
+                "caption": "Package Settings",
+                "mnemonic": "P",
+                "id": "package-settings",
+                "children":
+                [
+                    {
+                        "caption": "Sublime HL7",
+                        "children":
+                        [
+                            {
+                                "command": "edit_settings", "args": {
+                                    "base_file": "${packages}/Sublime HL7/Sublime HL7.sublime-settings",
+                                    "default": "{\n$0\n}\n"
+                                },
+                                "caption": "Settings"
+                            },
+                            { "caption": "-" },
+                            {
+                                "caption": "GitHub",
+                                "command": "export_html_open_site",
+                                "args": {
+                                    "url": "https://github.com/cdgramos/Sublime-Text-3---HL7-Plug-In/"
+                                }
+                            },
+                            {
+                                "caption": "Issue Reporting",
+                                "command": "export_html_open_site",
+                                "args": {
+                                    "url": "https://github.com/cdgramos/Sublime-Text-3---HL7-Plug-In/issues/"
+                                }
+                            },
+                            { "caption": "-" }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

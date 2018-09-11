@@ -1,0 +1,8 @@
+{
+	// As default this plug-in will highlight the .hl7 files.
+	// Disable this functionality by setting the flag to "false".
+	"hl7_highlight": true,
+	// This text defines the theme of the highlight.
+	// Accepts one the following: Classic, Ocean, Vivid
+	"hl7_highlight_theme": "Classic"
+}

@@ -1,6 +1,7 @@
 import sublime
 import sublime_plugin
 import re
+import os
 import webbrowser
 from .lib.hl7Event import *
 from .lib.hl7Segment import *
@@ -15,9 +16,41 @@ hl7SegmentList = hl7SegmentList.loadSegmentList()
 
 STATUS_BAR_HL7 = 'StatusBarHL7'
 
+
+# On selection modified update highlight preferences
+class selectionModifiedHighlightListener(sublime_plugin.EventListener):
+	def on_selection_modified(self, view):
+
+		sublime_hl7_settings = 'Sublime HL7.sublime-settings'
+		settings_file = sublime.load_settings(sublime_hl7_settings)
+		setting_hl7_highlight = settings_file.get("hl7_highlight")
+
+
+		setting_hl7_highlight_theme = settings_file.get("hl7_highlight_theme")
+
+		fileExtension = os.path.splitext(view.file_name())[1]
+		
+		if setting_hl7_highlight == True:
+
+
+			path = os.path.join(str(sublime.packages_path()), 'User', 'Lang\\hl7alt.tmLanguage')
+			
+			if (fileExtension == '.hl7'):
+				if(setting_hl7_highlight_theme) == 'Ocean':
+					view.set_syntax_file('Packages/Sublime HL7/lang/lang_hl7_ocean.tmLanguage')
+				elif (setting_hl7_highlight_theme) == 'Vivid':
+					view.set_syntax_file('Packages/Sublime HL7/lang/lang_hl7_vivid.tmLanguage')
+				else:
+					view.set_syntax_file('Packages/Sublime HL7/lang/lang_hl7_classic.tmLanguage')
+		else:
+			if (fileExtension == '.hl7'):
+				view.settings().set("syntax", "Plain Text")
+
+
 # On selection modified it will update the status bar
 class selectionModifiedListener(sublime_plugin.EventListener):
 	def on_selection_modified(self, view):
+
 
 
 		line = getLineTextBeforeCursorPosition(self, view, sublime)
@@ -178,7 +211,6 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 			if (segmentItem.code == fields[0]):
 				header = segmentItem.code + " - " + segmentItem.description
 				segmentCode = segmentItem.code
-
 
 		header = '<b style="color:#33ccff;">' + header + '</b>'
 
