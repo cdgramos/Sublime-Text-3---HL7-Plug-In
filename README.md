@@ -41,6 +41,23 @@ Quickly know which field you are looking to.
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 
+## Installation
+
+Manual Install (windows):
+
+* Clone / copy the whole repository to your machine
+* Extract the folder to a directory similar to this one: C:\Users\<Your.Name>\AppData\Roaming\Sublime Text 3\Packages\User\ (You can also access this directory using the Preferences >> Browse Packages...)
+* Re-start Sublime Text 3
+
+
+Install with Package Control:
+
+* Package Control: Add Repository
+* Use the following repository URL: https://github.com/cdgramos/Sublime-Text-3---HL7-Plug-In
+* Package Control: Install Package
+* Search for: Sublime Text 3 HL7 Plug-In
+
+
 ## Change Log
 * 24-08-2018 - Status bar now displays the segment and position where the cursor is
 * 23-07-2018 - Repetition character support
