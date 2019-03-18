@@ -46,7 +46,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 Manual Install (windows):
 
 * Clone / copy the whole repository to your machine
-* Extract the folder to a directory similar to this one: C:\Users\<Your.Name>\AppData\Roaming\Sublime Text 3\Packages\User\ (You can also access this directory using the Preferences >> Browse Packages...)
+* Extract the folder to a directory similar to this one: C:\Users\\<Your.Name>\AppData\Roaming\Sublime Text 3\Packages\User\ (You can also access this directory using the Preferences >> Browse Packages...)
 * Re-start Sublime Text 3
 
 
