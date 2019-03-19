@@ -1,0 +1,10 @@
+{
+	/*
+		NOT BEING USED YET
+		Load the specific HL7 schema files.
+		Accepts one of the following values:
+		2.5.1
+		As default it is set to: 2.5.1
+	*/
+	"hl7_version": "2.5.1",
+}
