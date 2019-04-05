@@ -286,8 +286,8 @@ class hl7cleanerCommand(sublime_plugin.TextCommand):
 
 		#when there is no space before 
 		for segmentItem in hl7SegmentList:
-			regex = "(?<=[a-zA-Z0-9|])" + segmentItem.code
-			filler = "\n" + segmentItem.code
+			regex = "(\|){1,}(?<=[a-zA-Z0-9|])" + segmentItem.code + "(\|){1,}"
+			filler = "|\n" + segmentItem.code + "|"
 			content = re.sub(regex, filler, content)
 
 		#last two ^M at the end of content followed by new line
