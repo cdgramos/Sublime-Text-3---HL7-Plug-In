@@ -1,4 +1,4 @@
-ST3 - HL7 plug-in and syntax highlighter
+## ST3 - HL7 plug-in and syntax highlighter
 
 HL7 Sublime Text 3 plug-in and syntax highlighter to make the life of those who work in the Health Integration field easier.
 
