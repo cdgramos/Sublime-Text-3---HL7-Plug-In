@@ -59,6 +59,7 @@ Install with Package Control:
 
 
 ## Change Log
+* 08-04-2018 - Initial settings and small fixes on syntax highlighter / HL7 cleaner
 * 24-08-2018 - Status bar now displays the segment and position where the cursor is
 * 23-07-2018 - Repetition character support
 * 22-07-2018 - Keyword inspector
