@@ -1,4 +1,4 @@
-# ST3 - HL7 plug-in and syntax highlighter
+9 ST3 - HL7 plug-in and syntax highlighter
 
 HL7 Sublime Text 3 plug-in and syntax highlighter to make the life of those who work in the Health Integration field easier.
 
@@ -58,7 +58,7 @@ Install with Package Control:
 
 
 ## Change Log
-* 08-04-2018 - Initial settings and small fixes on syntax highlighter / HL7 cleaner
+* 08-04-2019 - Initial settings and small fixes on syntax highlighter / HL7 cleaner
 * 24-08-2018 - Status bar now displays the segment and position where the cursor is
 * 23-07-2018 - Repetition character support
 * 22-07-2018 - Keyword inspector
