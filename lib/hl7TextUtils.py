@@ -43,6 +43,18 @@ def getFieldAtCursorPosition(self, view, sublime):
 
 	return lineFieldList[parcialLineFieldCounter-1]
 
+# Gets the entire component at cursor position
+def getComponentAtCursorPosition(self, view, sublime):
+
+	field = getFieldAtCursorPosition(self, view, sublime)
+
+	parcialComponentList = re.split(r'(?<!\\)(?:\\\\)*\^', field)
+	parcialComponentCounter = len(parcialComponentList)
+
+	return parcialComponentList[parcialComponentCounter-1]
+
+
+
 
 # Check if a field has components
 def fieldHasComponents(self, field):

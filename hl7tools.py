@@ -86,9 +86,14 @@ class doubleClickKeywordListener(sublime_plugin.EventListener):
 			isEvent = True
 			pt = view.window_to_text((event['x'], event['y']))
 			text = []
+
 			if view.sel():
+
 				for region in view.sel():
+					print(view.substr(view.word(region)))
+
 					if region.empty():
+
 						text.append(view.substr(view.word(region)))
 
 						def asyncMessagePopup():
@@ -112,11 +117,12 @@ class doubleClickKeywordListener(sublime_plugin.EventListener):
 									desc = segmentItem.description
 
 							if (len(desc) > 0):
-								view.show_popup('<b  style="color:#33ccff;">' + desc + '</b>', location=pt)
+								if(getComponentAtCursorPosition(self, view, sublime) == text[0]):
+									view.show_popup('<b  style="color:#33ccff;">' + desc + '</b>', location=pt)
 							
 						sublime.set_timeout_async(asyncMessagePopup)
 					else:
-						 text.append(view.substr(region))
+						text.append(view.substr(region))
 
 
 # Searchs an event or segment on caristix web-site
