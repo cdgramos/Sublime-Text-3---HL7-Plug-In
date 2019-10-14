@@ -21,9 +21,10 @@ class selectionModifiedListener(sublime_plugin.EventListener):
 
 
 		line = getLineTextBeforeCursorPosition(self, view, sublime)
+		fullLine = getLineAtCursorPosition(self, view)
 
 		# Get the first 3 letters of the line
-		segment = line[:3]
+		segment = fullLine[:3]
 
 		
 		if hl7Segment.getSegmentByCode(self, segment, hl7SegmentList) != None:
