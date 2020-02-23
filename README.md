@@ -23,7 +23,7 @@ Cleans an HL7 message from unwanted escape characters such as "^M". It also clea
 
 ### Segment / Event search
 Searches on Caristix web site the given segment (e.g. PID, OBX, ...) or event (e.g. ADT^A01, ADT_A04). Notice that events separated with both ^ and _ are valid searches.
-9![Segment Event Searcher Image](Misc/segmenteventsearcher.gif)
+![Segment Event Searcher Image](Misc/segmenteventsearcher.gif)
 
 ### Keyword Inspector
 On double click shows the description of the message (e.g. ADT_A01) or the segment (e.g. PV1).
