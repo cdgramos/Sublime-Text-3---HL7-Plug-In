@@ -49,10 +49,12 @@ Manual Install (windows):
 * Re-start Sublime Text 3
 
 
-Install with Package Control:
+Install with Package Control (see how to install package control here: https://packagecontrol.io/installation):
 
+* Open the command palette (Win/Linux: ctrl+shift+p, Mac: cmd+shift+p)
 * Package Control: Add Repository
 * Use the following repository URL: https://github.com/cdgramos/Sublime-Text-3---HL7-Plug-In
+* Open the command palette (Win/Linux: ctrl+shift+p, Mac: cmd+shift+p)
 * Package Control: Install Package
 * Search for: Sublime Text 3 HL7 Plug-In
 
