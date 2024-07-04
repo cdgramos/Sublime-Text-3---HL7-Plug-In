@@ -6,14 +6,12 @@ from .lib.hl7Event import *
 from .lib.hl7Segment import *
 from .lib.hl7TextUtils import *
 
-
-
-hl7EventList = hl7Event("","")
-hl7EventList = hl7EventList.loadEventList()
-hl7SegmentList = hl7Segment("","")
-hl7SegmentList = hl7SegmentList.loadSegmentList()
-
+# Constants
 STATUS_BAR_HL7 = 'StatusBarHL7'
+
+# Load HL7 event and segment lists
+hl7EventList = hl7Event("", "").loadEventList()
+hl7SegmentList = hl7Segment("", "").loadSegmentList()
 
 # On selection modified it will update the status bar
 class selectionModifiedListener(sublime_plugin.EventListener):
@@ -26,11 +24,9 @@ class selectionModifiedListener(sublime_plugin.EventListener):
 		# Get the first 3 letters of the line
 		segment = fullLine[:3]
 
-		
 		if hl7Segment.getSegmentByCode(self, segment, hl7SegmentList) != None:
 
 			statusBarText = '[ ' + segment + ' '
-
 
 			fieldList = re.split(r'(?<!\\)(?:\\\\)*\|', line)
 			fieldCounter = len(fieldList)
@@ -65,7 +61,6 @@ class selectionModifiedListener(sublime_plugin.EventListener):
 				subComponentCounter = len(subComponentList)
 				statusBarText += '.' + str(subComponentCounter)
 
-
 			statusBarText += ' ]' 
 			#sublime.status_message('\t' + statusBarText + ' '*20)
 			view.set_status(STATUS_BAR_HL7, statusBarText)
@@ -73,7 +68,6 @@ class selectionModifiedListener(sublime_plugin.EventListener):
 		else:
 			#sublime.status_message('')
 			view.erase_status(STATUS_BAR_HL7)
-
 
 
 
@@ -136,9 +130,9 @@ class hl7searchCommand(sublime_plugin.WindowCommand):
 		region1 = sel[0]
 		selectionText = view.substr(region1)
 
-		isValid = 0
+		isValid = False
 
-		URL = "http://hl7-definition.caristix.com:9010/HL7%20v2.5.1/Default.aspx?version=HL7 v2.5.1&"
+		URL = "https://hl7-definition.caristix.com/v2/HL7v2.5.1/"
 
 
 		for eventItem in hl7EventList:
@@ -148,17 +142,18 @@ class hl7searchCommand(sublime_plugin.WindowCommand):
 			codeWithoutCircunflex = re.sub(regex, filler, selectionText)
 
 			if (eventItem.code == codeWithoutCircunflex):
-				URL = URL + "triggerEvent=" + eventItem.code
-				isValid = 1
+				URL = URL + "TriggerEvents/" + eventItem.code
+				isValid = True
 
 		for segmentItem in hl7SegmentList:
 			if (segmentItem.code == selectionText):
-				URL = URL + "segment=" + segmentItem.code
-				isValid = 1
+				URL = URL + "Segments/" + segmentItem.code
+				isValid = True
 
 
-		if (isValid == 1):
+		if isValid:
 			webbrowser.open_new(URL)
+
 
 # Inspects an entire line
 class hl7inspectorCommand(sublime_plugin.TextCommand):
@@ -172,10 +167,8 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 		#Segment
 		selectedSegment = self.view.substr(self.view.line(self.view.sel()[0]))
 
-
 		fields = selectedSegment.split('|')
 		fields = re.split(r'(?<!\\)(?:\\\\)*\|', selectedSegment)
-
 
 		fieldId = 0
 		componentId = 1
@@ -185,7 +178,6 @@ class hl7inspectorCommand(sublime_plugin.TextCommand):
 			if (segmentItem.code == fields[0]):
 				header = segmentItem.code + " - " + segmentItem.description
 				segmentCode = segmentItem.code
-
 
 		header = '<b style="color:#33ccff;">' + header + '</b>'
 
@@ -345,6 +337,4 @@ class hl7cleanerCommand(sublime_plugin.TextCommand):
 		#blank spaces at the beginning of the text
 		content = re.sub("^ {1,}", "", content)
 		
-
-
 		self.view.insert(edit, 0, content + "\n\n\n")
