@@ -92,6 +92,7 @@ class hl7Event(object):
 		hl7EventList.append(hl7Event("CCU_I20", "Asynchronous collaborative care update"))
 		hl7EventList.append(hl7Event("CQU_I19", "Collaborative care query/collaborative care query update"))
 		hl7EventList.append(hl7Event("CRM_C01", "Register a patient on a clinical trial"))
+		hl7EventList.append(hl7Event("CRM_C02", "Cancel a Patient Registration on Clinical Trial"))
 		hl7EventList.append(hl7Event("CSU_C09", "Automated time intervals for reporting, like monthly"))
 		hl7EventList.append(hl7Event("DBC_O41", "Create donor record message"))
 		hl7EventList.append(hl7Event("DBC_O42", "Update donor record message"))
