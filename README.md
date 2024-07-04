@@ -60,6 +60,7 @@ Install with Package Control (see how to install package control here: https://p
 
 
 ## Change Log
+* 04-07-2024 - Fix - Search functionality works again
 * 30-09-2019 - Fix - Key word inspector only shows description if both clicks are on top of the word
 * 08-04-2019 - Initial settings and small fixes on syntax highlighter / HL7 cleaner
 * 24-08-2018 - Status bar now displays the segment and position where the cursor is
